@@ -43,6 +43,7 @@
       border-radius: 32px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.12);
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       font-size: 2.2rem;
@@ -136,11 +137,41 @@
         height: 28px;
       }
     }
+    .idea-text {
+      width: 100%;
+      font-size: inherit;
+      font-weight: inherit;
+      text-align: center;
+    }
+    .tip-text {
+      width: 100%;
+      font-size: 1.1rem;
+      margin-top: 1.2em;
+      opacity: 0.85;
+      text-align: center;
+      font-weight: 500;
+    }
+    .tip-list {
+      width: 100%;
+      font-size: 1.1rem;
+      margin-top: 1.2em;
+      opacity: 0.85;
+      text-align: left;
+      font-weight: 500;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.2em;
+    }
+    .tip-list li {
+      margin-bottom: 0.5em;
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
   <div class="card-container">
-    <div class="card" id="question-card">Would you rather have the ability to fly or be invisible?</div>
+    <div class="card" id="question-card"></div>
   </div>
   <button class="refresh-btn" id="refresh-btn" aria-label="Next question">
     <svg class="refresh-icon" viewBox="-40 -40 570 570" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 70%; height: 70%; display: block; margin: auto;">
@@ -148,24 +179,247 @@
     </svg>
   </button>
   <script>
-    const questions = [
-      "Would you rather wear sweatpants for the rest of your life (including funerals and weddings) or have to wear sparkles to everything?",
-      "Would you rather get stuck in an elevator with someone you hate or be stuck alone?",
-      "Would you rather not eat your favorite meal ever again or have to eat only that meal forever?",
-      "Would you rather speak all the languages of the world or be able to speak to animals?",
-      "Would you rather go to space or explore the depths of the ocean?",
-      "Would you rather have a partner with a possibly life-threatening job or a totally time-consuming job?",
-      "If you had to live in a cage for the rest of your life, would you rather the bars be horizontal, or vertical?",
-      "Would you rather be able to eat anything you want and have it be perfect nutrition or have to only sleep 1 hour a day and be fully rested?",
-      "Would you rather have an extra arm or an extra leg?",
-      "On an average day, how many pigeons do you think you could reasonably carry?",
-      "What are you proud of, but never have an excuse to talk about?",
-      "If all animals were the same size, what would win in a fight?",
-      "What's your favorite smell?",
-      "If you could pick a day to relive over and over, Groundhog Day style, before we met, what day would it be and why?",
-      "What’s one super power you would NOT want?",
-      "If you had a third ear, where would you put it?",
-      "Are you tempted to take a one-way trip to Mars?"
+    const dateIdeas = [
+      {
+        idea: "Have a picnic in a scenic park and bring homemade snacks.",
+        tips: [
+          "Bring a frisbee or a board game for extra fun!",
+          "Try to spot and name as many birds or animals as you can.",
+          "Pack a surprise treat for your date to discover."
+        ]
+      },
+      {
+        idea: "Visit a botanical garden and take photos of your favorite flowers.",
+        tips: [
+          "Touch textures of leaves (if permitted)—talk about how they feel.",
+          "Ask silly or thoughtful questions (\"If you were a flower, which would you be?\").",
+          "Photo challenge: Take turns snapping the prettiest or funniest plant photo. Vote on your favorites."
+        ]
+      },
+      {
+        idea: "Explore a local museum or art gallery together.",
+        tips: [
+          "Each pick your favorite piece and explain why you chose it.",
+          "Invent a backstory for a random artwork.",
+          "Try to find the oldest or strangest item in the collection."
+        ]
+      },
+      {
+        idea: "Take a pottery or ceramics class and make something for each other.",
+        tips: [
+          "Personalize your creations with a secret message or symbol.",
+          "Try making something with your non-dominant hand.",
+          "Swap pieces halfway through and finish each other's work."
+        ]
+      },
+      {
+        idea: "Go for a hike on a nature trail and enjoy the fresh air.",
+        tips: [
+          "Bring a nature scavenger hunt list and see who finds the most items.",
+          "Pause and sketch or describe the most beautiful view you find.",
+          "Collect interesting leaves or rocks (if allowed) as mementos."
+        ]
+      },
+      {
+        idea: "Visit a science center or planetarium and stargaze.",
+        tips: [
+          "Try to spot a constellation or make up your own.",
+          "Guess which planet or star is which before reading the signs.",
+          "Write a short story inspired by something you see."
+        ]
+      },
+      {
+        idea: "Try a cooking class for a new cuisine and cook together.",
+        tips: [
+          "Have a friendly cook-off to see who plates their dish best.",
+          "Invent a new dish using a surprise ingredient.",
+          "Give your finished dishes creative names and vote for the best."
+        ]
+      },
+      {
+        idea: "Go to a board game café and play strategy games.",
+        tips: [
+          "Each pick a game the other has never played before.",
+          "Make up a silly rule for one round of a game.",
+          "Play a cooperative game and try to beat the highest score."
+        ]
+      },
+      {
+        idea: "Visit a farmer's market and pick out ingredients for a meal.",
+        tips: [
+          "Set a budget and see who can find the most unique ingredient.",
+          "Ask a vendor for their favorite recipe using their produce.",
+          "Create a meal together using only what you buy at the market."
+        ]
+      },
+      {
+        idea: "Take a scenic bike ride along a river or lake.",
+        tips: [
+          "Stop for a mini photo shoot at the prettiest spot you find.",
+          "Race to a landmark and reward the winner with a treat.",
+          "Try riding tandem for a stretch if bikes allow."
+        ]
+      },
+      {
+        idea: "Go fruit picking at a local orchard or berry farm.",
+        tips: [
+          "Have a bake-off with what you pick when you get home.",
+          "See who can pick the biggest or most unusual fruit.",
+          "Make up a fruit-themed game or challenge while picking."
+        ]
+      },
+      {
+        idea: "Visit an aquarium and learn about marine life.",
+        tips: [
+          "Each person picks their favorite sea creature and shares a fun fact.",
+          "Try to spot the most colorful or unusual fish.",
+          "Draw or describe your favorite tank or exhibit."
+        ]
+      },
+      {
+        idea: "Take a painting or art workshop together.",
+        tips: [
+          "Swap canvases halfway through and finish each other's artwork.",
+          "Paint a scene from a shared memory or dream up a new one.",
+          "Use only three colors for a fun challenge."
+        ]
+      },
+      {
+        idea: "Go to a pottery painting studio and decorate mugs or plates.",
+        tips: [
+          "Paint something that represents a shared memory.",
+          "Try painting with your non-dominant hand for a round.",
+          "Create a matching set or theme together."
+        ]
+      },
+      {
+        idea: "Visit a historical site or landmark in your city.",
+        tips: [
+          "Dress up in a style from the era and take themed photos.",
+          "Find the oldest thing you can and guess its story.",
+          "Make up a fun or mysterious legend about the place."
+        ]
+      },
+      {
+        idea: "Have a themed movie night at home with snacks and cozy blankets.",
+        tips: [
+          "Create a trivia quiz based on the movie you watch.",
+          "Make snacks that match the movie's theme or setting.",
+          "Pause and predict what will happen next in the story."
+        ]
+      },
+      {
+        idea: "Go to a trampoline park or indoor climbing gym.",
+        tips: [
+          "Set fun challenges for each other, like who can bounce the highest.",
+          "Try a new obstacle or area you haven't before.",
+          "Time each other and see who can complete a course fastest."
+        ]
+      },
+      {
+        idea: "Take a guided nature walk or birdwatching tour.",
+        tips: [
+          "Bring binoculars and a bird guide to see who can spot the rarest bird.",
+          "Keep a list of all the animals or plants you see.",
+          "Try to mimic bird calls or make up your own."
+        ]
+      },
+      {
+        idea: "Visit a perfume factory or fragrance workshop and create your own scent.",
+        tips: [
+          "Try to guess each other's favorite scent ingredients.",
+          "Invent a scent and give it a creative name.",
+          "Describe a memory that a scent reminds you of."
+        ]
+      },
+      {
+        idea: "Go to a planetarium for a star show or astronomy night.",
+        tips: [
+          "Bring a notebook and write a short story inspired by the stars.",
+          "See who can spot the most constellations.",
+          "Imagine and name your own constellation together."
+        ]
+      },
+      {
+        idea: "Try a puzzle room or escape room challenge together.",
+        tips: [
+          "Afterwards, design a mini puzzle for each other to solve at home.",
+          "Divide into teams and see who escapes faster (if with friends).",
+          "Keep track of the funniest or most surprising moments."
+        ]
+      },
+      {
+        idea: "Visit a local animal sanctuary or petting zoo.",
+        tips: [
+          "Pick an animal to learn about and share your findings.",
+          "Try to mimic the sounds or movements of the animals.",
+          "Vote on the cutest or most unusual animal you see."
+        ]
+      },
+      {
+        idea: "Take a photography walk and capture interesting sights.",
+        tips: [
+          "Create a photo scavenger hunt with a list of things to find.",
+          "Only take black-and-white photos for a creative twist.",
+          "At the end, pick your favorite photo and explain why."
+        ]
+      },
+      {
+        idea: "Go kayaking or paddle boating on a calm lake.",
+        tips: [
+          "Pack a waterproof disposable camera for fun action shots.",
+          "Race to a point and back for a friendly competition.",
+          "Try to spot fish or interesting plants in the water."
+        ]
+      },
+      {
+        idea: "Attend a pottery or craft fair and browse handmade goods.",
+        tips: [
+          "Each buy a small gift for the other without revealing it until the end.",
+          "Vote on the most creative or unusual item you find.",
+          "Talk to a vendor and learn about their craft."
+        ]
+      },
+      {
+        idea: "Have a bookshop date and pick out books for each other.",
+        tips: [
+          "Write a note inside the book you choose for your date.",
+          "Pick a book based only on its cover and swap.",
+          "Find the oldest or most unusual book in the shop."
+        ]
+      },
+      {
+        idea: "Visit a butterfly conservatory and watch the butterflies.",
+        tips: [
+          "Try to spot the rarest butterfly and take a photo if you can.",
+          "Guess how many different species you can find.",
+          "Draw or describe your favorite butterfly."
+        ]
+      },
+      {
+        idea: "Take a scenic drive and stop at interesting spots along the way.",
+        tips: [
+          "Create a playlist for the drive and take turns being DJ.",
+          "Stop at a random spot and explore for 10 minutes.",
+          "Play a road trip game like I Spy or 20 Questions."
+        ]
+      },
+      {
+        idea: "Go to a cooking demonstration or food festival (halal options).",
+        tips: [
+          "Rate each dish you try and pick a winner at the end.",
+          "Try a dish you've never had before and describe it.",
+          "Collect recipe cards or take notes for inspiration."
+        ]
+      },
+      {
+        idea: "Try a calligraphy or art class together.",
+        tips: [
+          "Write each other a note or poem using your new skills.",
+          "Try writing your names in a different language or script.",
+          "Create a collaborative piece to take home."
+        ]
+      }
     ];
 
     function getRandomBrightColor() {
@@ -182,15 +436,15 @@
     function pickRandomIndex() {
       let idx;
       do {
-        idx = Math.floor(Math.random() * questions.length);
-      } while (idx === currentIndex && questions.length > 1);
+        idx = Math.floor(Math.random() * dateIdeas.length);
+      } while (idx === currentIndex && dateIdeas.length > 1);
       return idx;
     }
 
-    function showNextQuestion(animate = true) {
+    function showNextIdea(animate = true) {
       lastIndex = currentIndex;
       currentIndex = pickRandomIndex();
-      const nextQuestion = questions[currentIndex];
+      const next = dateIdeas[currentIndex];
       const gradients = [
         'linear-gradient(135deg, #3a3a7c 0%, #7c3aed 60%, #a855f7 100%)', // purple
         'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)', // blue
@@ -209,16 +463,16 @@
         'linear-gradient(135deg, #f857a6 0%, #ff5858 100%)', // pink-red
         'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' // green-cyan
       ];
-      if (typeof showNextQuestion.gradientIndex === 'undefined') {
-        showNextQuestion.gradientIndex = 0;
+      if (typeof showNextIdea.gradientIndex === 'undefined') {
+        showNextIdea.gradientIndex = 0;
       }
-      showNextQuestion.gradientIndex = (showNextQuestion.gradientIndex + 1) % gradients.length;
-      const nextGradient = gradients[showNextQuestion.gradientIndex];
+      showNextIdea.gradientIndex = (showNextIdea.gradientIndex + 1) % gradients.length;
+      const nextGradient = gradients[showNextIdea.gradientIndex];
       if (animate) {
         card.classList.add('animate-out');
         setTimeout(() => {
           card.style.background = nextGradient;
-          card.textContent = nextQuestion;
+          card.innerHTML = `<div class='idea-text'>${next.idea}</div><ul class='tip-list'>${next.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>`;
           card.classList.remove('animate-out');
           card.classList.add('animate-in');
           setTimeout(() => {
@@ -227,15 +481,15 @@
         }, 600);
       } else {
         card.style.background = nextGradient;
-        card.textContent = nextQuestion;
+        card.innerHTML = `<div class='idea-text'>${next.idea}</div><ul class='tip-list'>${next.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>`;
       }
     }
 
     refreshBtn.addEventListener('click', () => {
-      showNextQuestion();
+      showNextIdea();
     });
 
-    // On page load, pick a random question and gradient, set them, and animate in
+    // On page load, pick a random idea and gradient, set them, and animate in
     window.addEventListener('DOMContentLoaded', () => {
       const gradients = [
         'linear-gradient(135deg, #3a3a7c 0%, #7c3aed 60%, #a855f7 100%)',
@@ -255,11 +509,12 @@
         'linear-gradient(135deg, #f857a6 0%, #ff5858 100%)',
         'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
       ];
-      // Pick random question and gradient
-      currentIndex = Math.floor(Math.random() * questions.length);
-      showNextQuestion.gradientIndex = Math.floor(Math.random() * gradients.length);
-      card.textContent = questions[currentIndex];
-      card.style.background = gradients[showNextQuestion.gradientIndex];
+      // Pick random idea and gradient
+      currentIndex = Math.floor(Math.random() * dateIdeas.length);
+      showNextIdea.gradientIndex = Math.floor(Math.random() * gradients.length);
+      const first = dateIdeas[currentIndex];
+      card.innerHTML = `<div class='idea-text'>${first.idea}</div><ul class='tip-list'>${first.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>`;
+      card.style.background = gradients[showNextIdea.gradientIndex];
       // Animate in
       card.classList.add('animate-in');
       setTimeout(() => {
@@ -281,7 +536,7 @@
         if ((deltaX + deltaY + deltaZ) > SHAKE_THRESHOLD) {
           const now = Date.now();
           if (now - lastShake > 1000) { // 1s cooldown
-            showNextQuestion();
+            showNextIdea();
             lastShake = now;
           }
         }
@@ -294,7 +549,7 @@
     // Optional: allow pressing spacebar for next question (desktop)
     window.addEventListener('keydown', (e) => {
       if (e.code === 'Space') {
-        showNextQuestion();
+        showNextIdea();
       }
     });
   </script>
