@@ -167,9 +167,91 @@
       margin-bottom: 0.5em;
       line-height: 1.5;
     }
+    .card-meta {
+      font-size: 0.95rem;
+      color: #f3eaff;
+      opacity: 0.85;
+      margin-top: 1.2em;
+      text-align: center;
+      letter-spacing: 0.01em;
+      font-weight: 400;
+      line-height: 1.4;
+      user-select: none;
+      font-family: 'Segoe UI', 'Arial', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+    }
+    .filter-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.2em;
+      margin-bottom: 1.5em;
+      margin-top: 2em;
+    }
+    .filter-btn {
+      width: 54px;
+      height: 54px;
+      background: #fff;
+      border: 2px solid #e0e0f0;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(60,40,120,0.07);
+      transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+      outline: none;
+      position: relative;
+      user-select: none;
+    }
+    .filter-btn .filter-icon {
+      pointer-events: none;
+    }
+    .filter-btn.pressed {
+      background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+      color: #fff;
+      border: 2px solid #a855f7;
+      box-shadow: 0 4px 16px rgba(120,60,220,0.10);
+    }
+    .filter-btn:not(.pressed) {
+      background: #fff;
+      color: #a855f7;
+      border: 2px solid #e0e0f0;
+      opacity: 0.7;
+    }
+    .filter-btn:active {
+      box-shadow: 0 1px 4px rgba(60,40,120,0.13);
+    }
+    @media (max-width: 600px) {
+      .filter-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 1.3rem;
+        border-radius: 10px;
+      }
+      .filter-row {
+        gap: 0.7em;
+        margin-bottom: 1em;
+        margin-top: 1em;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="filter-row">
+    <button class="filter-btn pressed" id="filter-sun" title="Day activities">
+      <span class="filter-icon">&#9728;&#65039;</span>
+    </button>
+    <button class="filter-btn pressed" id="filter-moon" title="Night activities">
+      <span class="filter-icon">&#127769;</span>
+    </button>
+    <button class="filter-btn pressed" id="filter-kid" title="Kid friendly">
+      <span class="filter-icon">&#128118;</span>
+    </button>
+    <button class="filter-btn pressed" id="filter-list" title="No reservation required">
+      <span class="filter-icon">&#128221;</span>
+    </button>
+  </div>
   <div class="card-container">
     <div class="card" id="question-card"></div>
   </div>
@@ -181,7 +263,23 @@
   <script>
     const dateIdeas = [
       {
+        idea: "Take a pottery class together.",
+        kids: false,
+        reservation: true,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "day",
+        tips: [
+          "Make something for each other instead of for yourselves.",
+          "Follow up with a coffee or dessert date.",
+          "Buy matching aprons or smocks first."
+        ]
+      },
+      {
         idea: "Have a picnic in a scenic park and bring homemade snacks.",
+        kids: true,
+        reservation: false,
+        months: ["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+        time: "day",
         tips: [
           "Bring a frisbee or a board game for extra fun!",
           "Try to spot and name as many birds or animals as you can.",
@@ -190,6 +288,10 @@
       },
       {
         idea: "Visit a botanical garden and take photos of your favorite flowers.",
+        kids: true,
+        reservation: false,
+        months: ["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+        time: "day",
         tips: [
           "Touch textures of leaves (if permitted)—talk about how they feel.",
           "Ask silly or thoughtful questions (\"If you were a flower, which would you be?\").",
@@ -198,6 +300,10 @@
       },
       {
         idea: "Explore a local museum or art gallery together.",
+        kids: true,
+        reservation: false,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "both",
         tips: [
           "Each pick your favorite piece and explain why you chose it.",
           "Invent a backstory for a random artwork.",
@@ -206,6 +312,10 @@
       },
       {
         idea: "Take a pottery or ceramics class and make something for each other.",
+        kids: false,
+        reservation: true,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "day",
         tips: [
           "Personalize your creations with a secret message or symbol.",
           "Try making something with your non-dominant hand.",
@@ -214,6 +324,10 @@
       },
       {
         idea: "Go for a hike on a nature trail and enjoy the fresh air.",
+        kids: true,
+        reservation: false,
+        months: ["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+        time: "day",
         tips: [
           "Bring a nature scavenger hunt list and see who finds the most items.",
           "Pause and sketch or describe the most beautiful view you find.",
@@ -222,6 +336,10 @@
       },
       {
         idea: "Visit a science center or planetarium and stargaze.",
+        kids: true,
+        reservation: false,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "night",
         tips: [
           "Try to spot a constellation or make up your own.",
           "Guess which planet or star is which before reading the signs.",
@@ -230,6 +348,10 @@
       },
       {
         idea: "Try a cooking class for a new cuisine and cook together.",
+        kids: false,
+        reservation: true,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "both",
         tips: [
           "Have a friendly cook-off to see who plates their dish best.",
           "Invent a new dish using a surprise ingredient.",
@@ -238,6 +360,10 @@
       },
       {
         idea: "Go to a board game café and play strategy games.",
+        kids: false,
+        reservation: false,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "both",
         tips: [
           "Each pick a game the other has never played before.",
           "Make up a silly rule for one round of a game.",
@@ -246,6 +372,10 @@
       },
       {
         idea: "Visit a farmer's market and pick out ingredients for a meal.",
+        kids: true,
+        reservation: false,
+        months: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+        time: "day",
         tips: [
           "Set a budget and see who can find the most unique ingredient.",
           "Ask a vendor for their favorite recipe using their produce.",
@@ -254,6 +384,10 @@
       },
       {
         idea: "Take a scenic bike ride along a river or lake.",
+        kids: true,
+        reservation: false,
+        months: ["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+        time: "day",
         tips: [
           "Stop for a mini photo shoot at the prettiest spot you find.",
           "Race to a landmark and reward the winner with a treat.",
@@ -262,6 +396,10 @@
       },
       {
         idea: "Go fruit picking at a local orchard or berry farm.",
+        kids: true,
+        reservation: false,
+        months: ["May", "Jun", "Jul", "Aug", "Sep"],
+        time: "day",
         tips: [
           "Have a bake-off with what you pick when you get home.",
           "See who can pick the biggest or most unusual fruit.",
@@ -270,6 +408,10 @@
       },
       {
         idea: "Visit an aquarium and learn about marine life.",
+        kids: true,
+        reservation: false,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "both",
         tips: [
           "Each person picks their favorite sea creature and shares a fun fact.",
           "Try to spot the most colorful or unusual fish.",
@@ -278,6 +420,10 @@
       },
       {
         idea: "Take a painting or art workshop together.",
+        kids: false,
+        reservation: true,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "both",
         tips: [
           "Swap canvases halfway through and finish each other's artwork.",
           "Paint a scene from a shared memory or dream up a new one.",
@@ -286,6 +432,10 @@
       },
       {
         idea: "Go to a pottery painting studio and decorate mugs or plates.",
+        kids: true,
+        reservation: true,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "both",
         tips: [
           "Paint something that represents a shared memory.",
           "Try painting with your non-dominant hand for a round.",
@@ -294,6 +444,10 @@
       },
       {
         idea: "Visit a historical site or landmark in your city.",
+        kids: true,
+        reservation: false,
+        months: ["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+        time: "day",
         tips: [
           "Dress up in a style from the era and take themed photos.",
           "Find the oldest thing you can and guess its story.",
@@ -302,6 +456,10 @@
       },
       {
         idea: "Have a themed movie night at home with snacks and cozy blankets.",
+        kids: true,
+        reservation: false,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "night",
         tips: [
           "Create a trivia quiz based on the movie you watch.",
           "Make snacks that match the movie's theme or setting.",
@@ -310,6 +468,10 @@
       },
       {
         idea: "Go to a trampoline park or indoor climbing gym.",
+        kids: true,
+        reservation: true,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "both",
         tips: [
           "Set fun challenges for each other, like who can bounce the highest.",
           "Try a new obstacle or area you haven't before.",
@@ -318,6 +480,10 @@
       },
       {
         idea: "Take a guided nature walk or birdwatching tour.",
+        kids: true,
+        reservation: true,
+        months: ["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+        time: "day",
         tips: [
           "Bring binoculars and a bird guide to see who can spot the rarest bird.",
           "Keep a list of all the animals or plants you see.",
@@ -326,6 +492,10 @@
       },
       {
         idea: "Visit a perfume factory or fragrance workshop and create your own scent.",
+        kids: false,
+        reservation: true,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "day",
         tips: [
           "Try to guess each other's favorite scent ingredients.",
           "Invent a scent and give it a creative name.",
@@ -334,6 +504,10 @@
       },
       {
         idea: "Go to a planetarium for a star show or astronomy night.",
+        kids: true,
+        reservation: true,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "night",
         tips: [
           "Bring a notebook and write a short story inspired by the stars.",
           "See who can spot the most constellations.",
@@ -342,6 +516,10 @@
       },
       {
         idea: "Try a puzzle room or escape room challenge together.",
+        kids: false,
+        reservation: true,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "both",
         tips: [
           "Afterwards, design a mini puzzle for each other to solve at home.",
           "Divide into teams and see who escapes faster (if with friends).",
@@ -350,6 +528,10 @@
       },
       {
         idea: "Visit a local animal sanctuary or petting zoo.",
+        kids: true,
+        reservation: false,
+        months: ["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+        time: "day",
         tips: [
           "Pick an animal to learn about and share your findings.",
           "Try to mimic the sounds or movements of the animals.",
@@ -358,6 +540,10 @@
       },
       {
         idea: "Take a photography walk and capture interesting sights.",
+        kids: true,
+        reservation: false,
+        months: ["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+        time: "day",
         tips: [
           "Create a photo scavenger hunt with a list of things to find.",
           "Only take black-and-white photos for a creative twist.",
@@ -366,6 +552,10 @@
       },
       {
         idea: "Go kayaking or paddle boating on a calm lake.",
+        kids: true,
+        reservation: false,
+        months: ["May", "Jun", "Jul", "Aug", "Sep"],
+        time: "day",
         tips: [
           "Pack a waterproof disposable camera for fun action shots.",
           "Race to a point and back for a friendly competition.",
@@ -374,6 +564,10 @@
       },
       {
         idea: "Attend a pottery or craft fair and browse handmade goods.",
+        kids: true,
+        reservation: false,
+        months: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+        time: "day",
         tips: [
           "Each buy a small gift for the other without revealing it until the end.",
           "Vote on the most creative or unusual item you find.",
@@ -382,6 +576,10 @@
       },
       {
         idea: "Have a bookshop date and pick out books for each other.",
+        kids: true,
+        reservation: false,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "both",
         tips: [
           "Write a note inside the book you choose for your date.",
           "Pick a book based only on its cover and swap.",
@@ -390,6 +588,10 @@
       },
       {
         idea: "Visit a butterfly conservatory and watch the butterflies.",
+        kids: true,
+        reservation: false,
+        months: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+        time: "day",
         tips: [
           "Try to spot the rarest butterfly and take a photo if you can.",
           "Guess how many different species you can find.",
@@ -398,6 +600,10 @@
       },
       {
         idea: "Take a scenic drive and stop at interesting spots along the way.",
+        kids: true,
+        reservation: false,
+        months: ["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+        time: "both",
         tips: [
           "Create a playlist for the drive and take turns being DJ.",
           "Stop at a random spot and explore for 10 minutes.",
@@ -406,6 +612,10 @@
       },
       {
         idea: "Go to a cooking demonstration or food festival (halal options).",
+        kids: true,
+        reservation: false,
+        months: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+        time: "day",
         tips: [
           "Rate each dish you try and pick a winner at the end.",
           "Try a dish you've never had before and describe it.",
@@ -414,6 +624,10 @@
       },
       {
         idea: "Try a calligraphy or art class together.",
+        kids: false,
+        reservation: true,
+        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        time: "both",
         tips: [
           "Write each other a note or poem using your new skills.",
           "Try writing your names in a different language or script.",
@@ -428,23 +642,54 @@
       return `hsl(${hue}, 90%, 60%)`;
     }
 
+    function getCurrentMonthAbbr() {
+      const monthAbbrs = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      return monthAbbrs[new Date().getMonth()];
+    }
+
+    function getFilteredIdeas() {
+      const currentMonth = getCurrentMonthAbbr();
+      let filtered = dateIdeas.filter(idea => Array.isArray(idea.months) && idea.months.includes(currentMonth));
+      // Filter by button states
+      if (window.filterStates) {
+        // Sun: if unpressed, remove day or both
+        if (!window.filterStates.sun) {
+          filtered = filtered.filter(idea => idea.time !== 'day' && idea.time !== 'both');
+        }
+        // Moon: if unpressed, remove night or both
+        if (!window.filterStates.moon) {
+          filtered = filtered.filter(idea => idea.time !== 'night' && idea.time !== 'both');
+        }
+        // Kid: if unpressed, remove kid-friendly
+        if (!window.filterStates.kid) {
+          filtered = filtered.filter(idea => idea.kids === false);
+        }
+        // List: if unpressed, remove reservation required
+        if (!window.filterStates.list) {
+          filtered = filtered.filter(idea => idea.reservation === false);
+        }
+      }
+      return filtered.length > 0 ? filtered : dateIdeas;
+    }
+
     let currentIndex = 0;
     let lastIndex = -1;
     const card = document.getElementById('question-card');
     const refreshBtn = document.getElementById('refresh-btn');
 
-    function pickRandomIndex() {
+    function pickRandomIndex(ideasArr) {
       let idx;
       do {
-        idx = Math.floor(Math.random() * dateIdeas.length);
-      } while (idx === currentIndex && dateIdeas.length > 1);
+        idx = Math.floor(Math.random() * ideasArr.length);
+      } while (ideasArr.length > 1 && idx === currentIndex);
       return idx;
     }
 
     function showNextIdea(animate = true) {
+      const filteredIdeas = getFilteredIdeas();
       lastIndex = currentIndex;
-      currentIndex = pickRandomIndex();
-      const next = dateIdeas[currentIndex];
+      currentIndex = pickRandomIndex(filteredIdeas);
+      const next = filteredIdeas[currentIndex];
       const gradients = [
         'linear-gradient(135deg, #3a3a7c 0%, #7c3aed 60%, #a855f7 100%)', // purple
         'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)', // blue
@@ -468,11 +713,25 @@
       }
       showNextIdea.gradientIndex = (showNextIdea.gradientIndex + 1) % gradients.length;
       const nextGradient = gradients[showNextIdea.gradientIndex];
+
+      // --- Meta info construction ---
+      // Month range
+      let months = next.months || [];
+      let monthRange = months.length > 1 ? `${months[0]} – ${months[months.length-1]}` : (months[0] || "");
+      // Time
+      let timeLabel = next.time === "both" ? "Day/Night" : (next.time.charAt(0).toUpperCase() + next.time.slice(1));
+      // Kids
+      let kidsLabel = next.kids ? ' &bull; <span title="Kid friendly">&#128118; kids</span>' : '';
+      // Reservation
+      let reservationLabel = next.reservation ? ' &bull; &#128694; Reservation required' : ' &bull; &#128694; No reservation required';
+      // Meta HTML
+      let metaHTML = `<div class="card-meta">${monthRange} &bull; ${timeLabel}${kidsLabel}${reservationLabel}</div>`;
+
       if (animate) {
         card.classList.add('animate-out');
         setTimeout(() => {
           card.style.background = nextGradient;
-          card.innerHTML = `<div class='idea-text'>${next.idea}</div><ul class='tip-list'>${next.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>`;
+          card.innerHTML = `<div class='idea-text'>${next.idea}</div><ul class='tip-list'>${next.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>${metaHTML}`;
           card.classList.remove('animate-out');
           card.classList.add('animate-in');
           setTimeout(() => {
@@ -481,7 +740,7 @@
         }, 600);
       } else {
         card.style.background = nextGradient;
-        card.innerHTML = `<div class='idea-text'>${next.idea}</div><ul class='tip-list'>${next.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>`;
+        card.innerHTML = `<div class='idea-text'>${next.idea}</div><ul class='tip-list'>${next.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>${metaHTML}`;
       }
     }
 
@@ -509,11 +768,19 @@
         'linear-gradient(135deg, #f857a6 0%, #ff5858 100%)',
         'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
       ];
-      // Pick random idea and gradient
-      currentIndex = Math.floor(Math.random() * dateIdeas.length);
+      // Filter ideas for current month
+      const filteredIdeas = getFilteredIdeas();
+      currentIndex = Math.floor(Math.random() * filteredIdeas.length);
       showNextIdea.gradientIndex = Math.floor(Math.random() * gradients.length);
-      const first = dateIdeas[currentIndex];
-      card.innerHTML = `<div class='idea-text'>${first.idea}</div><ul class='tip-list'>${first.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>`;
+      const first = filteredIdeas[currentIndex];
+      // --- Meta info construction ---
+      let months = first.months || [];
+      let monthRange = months.length > 1 ? `${months[0]} – ${months[months.length-1]}` : (months[0] || "");
+      let timeLabel = first.time === "both" ? "Day/Night" : (first.time.charAt(0).toUpperCase() + first.time.slice(1));
+      let kidsLabel = first.kids ? ' &bull; <span title="Kid friendly">&#128118; kids</span>' : '';
+      let reservationLabel = first.reservation ? ' &bull; &#128694; Reservation required' : ' &bull; &#128694; No reservation required';
+      let metaHTML = `<div class="card-meta">${monthRange} &bull; ${timeLabel}${kidsLabel}${reservationLabel}</div>`;
+      card.innerHTML = `<div class='idea-text'>${first.idea}</div><ul class='tip-list'>${first.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>${metaHTML}`;
       card.style.background = gradients[showNextIdea.gradientIndex];
       // Animate in
       card.classList.add('animate-in');
@@ -551,6 +818,20 @@
       if (e.code === 'Space') {
         showNextIdea();
       }
+    });
+
+    // --- Filter button logic ---
+    window.filterStates = { sun: true, moon: true, kid: true, list: true };
+    function updateFilterState(btn, key) {
+      window.filterStates[key] = !window.filterStates[key];
+      btn.classList.toggle('pressed');
+      showNextIdea();
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('filter-sun').addEventListener('click', function() { updateFilterState(this, 'sun'); });
+      document.getElementById('filter-moon').addEventListener('click', function() { updateFilterState(this, 'moon'); });
+      document.getElementById('filter-kid').addEventListener('click', function() { updateFilterState(this, 'kid'); });
+      document.getElementById('filter-list').addEventListener('click', function() { updateFilterState(this, 'list'); });
     });
   </script>
 </body>
